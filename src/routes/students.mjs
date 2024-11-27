@@ -197,15 +197,104 @@ router.post("/student/student-login",checkSchema(studentLoginValidation), async 
             process.env.JWT_SECRET,
             {expiresIn: "1h"}
         );
-        
 
-        return res.cookie("accessToken", token).status(200).json({ token });
+        // res.cookie('token', token, {
+        //     httpOnly: true,   // Prevent JavaScript access to cookies
+        //     secure: process.env.NODE_ENV === 'production',  // Ensure cookie is sent over HTTPS in production
+        //     sameSite: 'None', // Allow cross-origin requests (important for cross-domain cookies)
+        //   });
+        
+        // res.json({ token });  // Optionally send back the token in the response
+
+       
+
+        return res.cookie("accessToken", token, { httpOnly: true, sameSite: 'None', secure: process.env.NODE_ENV === 'production'}).status(200).json({ token });
         //return res.redirect("/student/student_dashboard");                     // Forward to student dashboard
     } catch(err) {
         return res.status(400).json({ message: err.message });
         //return res.redirect("/student/student_login");                     // Forward to same student login page with msg of error
     }
 })
+// Student login api
+// router.post("/student/student-login", checkSchema(studentLoginValidation), async (req, res) => {
+//     const result = validationResult(req);
+
+//     if (!result.isEmpty())  // Checks for validation errors
+//         return res.status(400).send({ errors: result.array() });
+
+//     const data = matchedData(req);
+
+//     try {
+//         const findStudent = await Models.Student.findOne({ where: { email: data.email } });  // Search for the student by email
+        
+//         if (!findStudent)  // If the student is not found
+//             return res.status(404).send("Unregistered Student");
+
+//         if (findStudent.pwd !== data.pwd)  // If the password is incorrect
+//             return res.status(404).send("Invalid Password");
+
+//         const token = jwt.sign(
+//             { reg_no: findStudent.reg_no, full_name: findStudent.full_name, profile_pic: findStudent.profile_pic },
+//             process.env.JWT_SECRET,
+//             { expiresIn: "1h" }
+//         );
+
+//         // Set the JWT token as a secure, httpOnly cookie
+//         return res.cookie("accessToken", token, {
+//             httpOnly: true,        // Prevent client-side JavaScript from accessing the cookie
+//             secure: process.env.NODE_ENV === 'production',  // Only send cookies over HTTPS in production
+//             sameSite: 'None',      // Allow cross-origin cookies in production (important for sites hosted on different domains)
+//             maxAge: 3600000       // Cookie expiration (1 hour)
+//         }).status(200).json({ message: "Logged in successfully"});  // No need to send the token in response body
+
+//     } catch (err) {
+//         return res.status(400).json({ message: err.message });
+//     }
+// });
+
+// router.post("/student/student-login", checkSchema(studentLoginValidation), async (req, res) => {
+//     const result = validationResult(req);
+
+//     if (!result.isEmpty())  // Checks for validation errors
+//         return res.status(400).send({ errors: result.array() });
+
+//     const data = matchedData(req);
+
+//     try {
+//         const findStudent = await Models.Student.findOne({ where: { email: data.email } });  // Search for the student by email
+        
+//         if (!findStudent)  // If the student is not found
+//             return res.status(404).send("Unregistered Student");
+
+//         if (findStudent.pwd !== data.pwd)  // If the password is incorrect
+//             return res.status(404).send("Invalid Password");
+
+//         const token = jwt.sign(
+//             { reg_no: findStudent.reg_no, full_name: findStudent.full_name, profile_pic: findStudent.profile_pic },
+//             process.env.JWT_SECRET,
+//             { expiresIn: "1h" }
+//         );
+
+//         // Set the token as a secure, httpOnly cookie
+//         res.cookie("accessToken", token, {
+//             httpOnly: true,        // Prevent client-side JavaScript from accessing the cookie
+//             secure: process.env.NODE_ENV === 'production',  // Only send cookies over HTTPS in production
+//             sameSite: 'None',      // Allow cross-origin cookies in production (important for sites hosted on different domains)
+//             maxAge: 3600000       // Cookie expiration (1 hour)
+//         });
+
+//         // Send the token in the JSON response body
+//         return res.status(200).json({
+//             message: "Logged in successfully",
+//             token: token  // Send the token in the response body
+//         });
+
+//     } catch (err) {
+//         return res.status(400).json({ message: err.message });
+//     }
+// });
+
+
 
 // Student logout api
 router.post("/student/logout", async(req, res) => {
