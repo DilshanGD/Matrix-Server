@@ -34,7 +34,7 @@ export function createApp() {
     app.use(bodyParser.json());
     app.use(express.json());
     app.use(cookieParser({
-      secure: true
+      secure: false
     }));
 
     // Set up session handling
