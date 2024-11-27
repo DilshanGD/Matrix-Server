@@ -23,8 +23,8 @@ export function createApp() {
     //     credentials: true,                // Allow cookies/session to be sent
     // }));
     app.use(cors({
-          origin: 'https://matrix-online-institute.netlify.app', // Allow requests from your frontend
-          //origin: 'http://localhost:3000', // Allow requests from your frontend
+          //origin: 'https://matrix-online-institute.netlify.app', // Allow requests from your frontend
+          origin: 'http://localhost:3000', // Allow requests from your frontend
           methods: ['GET', 'POST', 'OPTIONS'], // Specify allowed methods
           //allowedHeaders: ['Content-Type', 'Authorization'], // Specify allowed headers
           credentials: true, // Enable credentials (cookies, session)
@@ -33,7 +33,9 @@ export function createApp() {
 
     app.use(bodyParser.json());
     app.use(express.json());
-    app.use(cookieParser());
+    app.use(cookieParser({
+      secure: true
+    }));
 
     // Set up session handling
     // app.use(session({
